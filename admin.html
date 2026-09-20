@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bayiira — Admin Dashboard</title><link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+<img class="logo" src="logo.png" alt="Logo"><div class="brand"><h1>BAYIIRA OF RWENZORI MY HOME LAND ASSOCIATION</h1><p>Membership Administration</p></div>
+</div></header>
+
+<main class="container">
+<div id="loginView" class="card login">
+<div class="section">
+<div class="logo-wrap"><img class="logo" src="logo.png" alt="Logo"></div>
+<h1>Administrator Login</h1><p>Authorized association administrator access</p>
+<label class="field">Email</label><input id="email" type="email" autocomplete="username" value="tcss2026@gmail.com">
+<label class="field" style="margin-top:12px">Password</label><input id="password" type="password" autocomplete="current-password">
+<button id="loginBtn" class="btn btn-primary" style="width:100%;margin-top:15px">LOGIN</button>
+<div id="loginError" class="error"></div>
+</div></div>
+
+<div id="dashboardView" class="hidden">
+<div class="dashboard-head"><h2>Member Registrations</h2><button id="logoutBtn" class="btn btn-secondary">Sign out</button></div>
+<div class="stats">
+<div class="stat"><strong id="totalCount">0</strong><span>Total</span></div>
+<div class="stat"><strong id="pendingCount">0</strong><span>Pending</span></div>
+<div class="stat"><strong id="approvedCount">0</strong><span>Approved</span></div>
+<div class="stat"><strong id="rejectedCount">0</strong><span>Rejected</span></div>
+</div>
+<div class="card" style="padding:15px">
+<div class="toolbar">
+<input id="search" placeholder="Search name, phone, email...">
+<select id="statusFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+<button id="refreshBtn" class="btn btn-secondary">Refresh</button>
+</div>
+<div class="table-wrap"><table><thead><tr><th>Applicant</th><th>Phone</th><th>Membership</th><th>Submitted</th><th>Status</th><th>Actions</th></tr></thead><tbody id="membersBody"></tbody></table></div>
+</div>
+</div>
+</main>
+
+<div id="detailModal" class="modal"><div class="modal-box">
+<div class="modal-head"><strong>Member Details</strong><button id="closeModal" class="btn btn-secondary btn-small">Close</button></div>
+<div id="detailBody" class="modal-body"></div>
+</div></div>
+
+<script type="module" src="admin.js?v=6"></script>
+<footer class="footer">
+  <div>Bayiira of Rwenzori My Home Land Association — Administrator</div>
+  <a class="creator-mini" href="https://galaxymediadesign.netlify.app" target="_blank" rel="noopener noreferrer">
+    <img src="galaxy-media-designs.png" alt="Galaxy Media Designs">
+    <span>Created by GALAXY MEDIA DESIGNS</span>
+  </a>
+</footer>
+</body></html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#087a35">
+<title>Bayiira of Rwenzori — Membership Registration</title>
+<link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <img class="logo" src="logo.png" alt="Bayiira of Rwenzori logo">
+    <div class="brand">
+      <h1>BAYIIRA OF RWENZORI MY HOME LAND ASSOCIATION</h1>
+      <p>Online Membership Registration</p>
+    </div>
+  </div>
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="#registrationForm">Membership Registration</a>
+    <a href="admin.html" class="admin-nav-btn">🔐 Admin Login</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="intro">
+    <div>
+      <h2>Membership Registration Form</h2>
+      <p>Complete the form below to apply for or renew your association membership.</p>
+    </div>
+    <div class="required-note">* Required fields</div>
+  </div>
+
+  <form id="registrationForm" class="card" novalidate>
+    <section class="section">
+      <h2 class="section-title" data-number="01">Membership</h2>
+      <div class="grid">
+        <div class="full"><label class="field">Category of Membership <span class="req">*</span></label><div class="options">
+          <label class="option"><input type="radio" name="membershipCategory" value="New" required> New</label>
+          <label class="option"><input type="radio" name="membershipCategory" value="Renewal"> Renewal</label>
+        </div></div>
+        <div><label class="field">Applicant First Name <span class="req">*</span></label><input type="text" name="firstName" autocomplete="given-name" required></div>
+        <div><label class="field">Applicant Last Name <span class="req">*</span></label><input type="text" name="lastName" autocomplete="family-name" required></div>
+        <div><label class="field">Ledger Number</label><input type="text" name="ledgerNumber"></div>
+        <div><label class="field">Email</label><input type="email" name="email" autocomplete="email"></div>
+        <div><label class="field">Phone No <span class="req">*</span></label><input type="tel" name="phone" autocomplete="tel" required></div>
+      </div>
+    </section>
+
+    <section class="section"><h2 class="section-title" data-number="02">Address & Personal Information</h2><div class="grid">
+      <div><label class="field">Parish</label><input type="text" name="parish"></div>
+      <div><label class="field">Sub County</label><input type="text" name="subCounty"></div>
+      <div><label class="field">County</label><input type="text" name="county"></div>
+      <div><label class="field">District</label><input type="text" name="district"></div>
+      <div><label class="field">Region</label><input type="text" name="region"></div>
+      <div><label class="field">Occupation</label><input type="text" name="occupation"></div>
+      <div class="full"><label class="field">Status <span class="req">*</span></label><div class="options">
+        <label class="option"><input type="radio" name="status" value="Single" required> Single</label><label class="option"><input type="radio" name="status" value="Married"> Married</label><label class="option"><input type="radio" name="status" value="Divorced"> Divorced</label><label class="option"><input type="radio" name="status" value="Widower"> Widower</label>
+      </div></div>
+      <div><label class="field">Gender <span class="req">*</span></label><select name="gender" required><option value="">Select gender</option><option>Male</option><option>Female</option></select></div>
+      <div><label class="field">Date of Birth</label><input type="date" name="dateOfBirth"></div>
+      <div class="full"><label class="field">Name of Parent or Guardian</label><input type="text" name="parentGuardian"></div>
+      <div class="full"><label class="field">Home Address (if different from yours)</label><textarea name="homeAddress"></textarea></div>
+      <div><label class="field">Date of Issue</label><input type="date" name="dateOfIssue"></div>
+    </div></section>
+
+    <section class="section"><h2 class="section-title" data-number="03">Family & Next of Kin</h2><div class="grid">
+      <div><label class="field">Spouse First Name</label><input type="text" name="spouseFirstName"></div>
+      <div><label class="field">Spouse Last Name</label><input type="text" name="spouseLastName"></div>
+      <div><label class="field">Spouse Phone Number</label><input type="tel" name="spousePhone"></div>
+      <div><label class="field">Next of Kin First Name <span class="req">*</span></label><input type="text" name="nokFirstName" required></div>
+      <div><label class="field">Next of Kin Last Name <span class="req">*</span></label><input type="text" name="nokLastName" required></div>
+      <div><label class="field">Relationship of NOK</label><input type="text" name="nokRelationship"></div>
+      <div><label class="field">NOK Parish</label><input type="text" name="nokParish"></div>
+      <div><label class="field">NOK Sub County</label><input type="text" name="nokSubCounty"></div>
+      <div><label class="field">NOK District</label><input type="text" name="nokDistrict"></div>
+    </div></section>
+
+    <section class="section"><h2 class="section-title" data-number="04">Other Information</h2><div class="grid">
+      <div class="full"><label class="field">Type of Membership Requested <span class="req">*</span></label><div class="options"><label class="option"><input type="radio" name="membershipType" value="Full member" required> Full member</label><label class="option"><input type="radio" name="membershipType" value="Partial member"> Partial member</label></div></div>
+      <div class="full"><label class="field">Willingness to contribute towards the Association support fund to boost our income</label><div class="options"><label class="option"><input type="radio" name="supportFund" value="Yes"> Yes</label><label class="option"><input type="radio" name="supportFund" value="No"> No</label></div></div>
+      <div class="full"><label class="field">Interest in involvement in Association activities</label><div class="options"><label class="option"><input type="radio" name="activitiesInterest" value="Yes"> Yes</label><label class="option"><input type="radio" name="activitiesInterest" value="No"> No</label></div></div>
+      <div class="full"><label class="field">Detailed explanation if yes to either question</label><textarea name="details"></textarea></div>
+      <div class="full"><label class="field">How did you learn about the Association?</label><textarea name="howLearned"></textarea></div>
+    </div></section>
+
+    <section class="section"><h2 class="section-title" data-number="05">Active Involvement</h2><div class="grid">
+      <div class="full"><label class="field">Are you interested in becoming actively involved?</label><div class="options">
+        <label class="option"><input type="radio" name="activeInvolvement" value="1"> 1. Yes, I would like active involvement and have time.</label>
+        <label class="option"><input type="radio" name="activeInvolvement" value="2"> 2. Yes, I would like active involvement but have limited time.</label>
+        <label class="option"><input type="radio" name="activeInvolvement" value="3"> 3. No, I don't wish active involvement, but want membership benefits.</label>
+      </div></div>
+      <div class="full"><label class="field">If actively involved and have time, would you like to hold a position?</label><div class="options"><label class="option"><input type="radio" name="holdPosition" value="Yes"> Yes</label><label class="option"><input type="radio" name="holdPosition" value="No"> No</label></div></div>
+      <div class="full"><label class="field">If yes, what position are you interested in?</label><input type="text" name="positionInterested"></div>
+      <div class="full"><label class="field">Shirt size</label><div class="options"><label class="option"><input type="radio" name="shirtSize" value="Small"> Small</label><label class="option"><input type="radio" name="shirtSize" value="Medium"> Medium</label><label class="option"><input type="radio" name="shirtSize" value="Large"> Large</label><label class="option"><input type="radio" name="shirtSize" value="Extra Large"> Extra Large</label></div></div>
+    </div></section>
+
+    <section class="section"><h2 class="section-title" data-number="06">Declaration</h2>
+      <label class="option"><input type="checkbox" name="agreement" required> I agree to abide by the rules and regulations of the Bayiira of Rwenzori My Home Land Association as may be in force from time to time and pay all the dues as applicable from time to time.</label>
+    </section>
+
+    <section class="section"><h2 class="section-title" data-number="07">Association Office Use</h2><div class="grid">
+      <div><label class="field">Prepared by</label><input type="text" name="preparedBy" placeholder="Secretary"></div>
+      <div><label class="field">Approved by</label><input type="text" name="approvedBy" placeholder="Chairman"></div>
+    </div></section>
+
+    <section class="section submit-area">
+      <button id="submitBtn" class="btn btn-primary" type="submit">SUBMIT MEMBERSHIP REGISTRATION</button>
+      <div id="success" class="success" role="status"></div><div id="error" class="error" role="alert"></div>
+    </section>
+  </form>
+
+  <section id="submissionSuccess" class="submission-success hidden" aria-live="polite">
+    <div class="success-icon">✓</div>
+    <div class="success-content">
+      <div class="success-label">SUBMITTED</div>
+      <h2>Membership registration submitted</h2>
+      <p>Your registration has been received successfully.</p>
+      <div class="reference-box">
+        <span>Registration Reference</span>
+        <strong id="registrationReference">—</strong>
+      </div>
+      <button id="submitAnotherBtn" class="btn btn-primary" type="button">SUBMIT ANOTHER</button>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div>Bayiira of Rwenzori My Home Land Association</div>
+  <a class="creator-mini" href="https://galaxymediadesign.netlify.app" target="_blank" rel="noopener noreferrer" aria-label="Created by Galaxy Media Designs">
+    <img src="galaxy-media-designs.png" alt="Galaxy Media Designs logo">
+    <span>Created by GALAXY MEDIA DESIGNS</span>
+  </a>
+</footer>
+<script type="module" src="app.js?v=6"></script>
+</body>
+</html>
