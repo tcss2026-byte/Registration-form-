@@ -21,7 +21,7 @@ FILES
 - logo.png            Supplied Bayiira logo
 
 FIREBASE SETUP
-1. Open Firebase Console for project borh-d7a41.
+1. Open Firebase Console for project bayiira.
 2. Authentication -> Sign-in method -> enable Email/Password.
 3. Authentication -> Users -> create/confirm:
    Email: tcss2026@gmail.com
@@ -39,3 +39,16 @@ IMPORTANT SECURITY
 
 DEPLOYMENT
 For Firebase Hosting, serve this folder as the public directory. No npm install or build step is required.
+
+
+NEW FEATURES
+- Member passport photo upload during registration via Cloudinary.
+- Cloudinary cloud name: k5bsrnx1; unsigned upload preset: new-conquerors.
+- Administrator can update their own profile picture via Cloudinary.
+- Admin-only downloadable professional PNG membership ID for approved members.
+- Automatic registration numbers: BOR/2026/001, BOR/2026/002, etc., assigned when the admin approves a member.
+- ID includes Bayiira logo/header, passport photo, first name, last name, membership type, registration number, surname-style signature text, and a Code 128 barcode based on the registration number.
+- The ID download control is only exposed after administrator authentication.
+
+IMPORTANT CLOUDINARY SETUP
+The upload preset "new-conquerors" must be configured as an UNSIGNED upload preset in Cloudinary for browser uploads to work.

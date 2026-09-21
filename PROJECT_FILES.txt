@@ -1,0 +1,9 @@
+BAYIIRA MEMBERSHIP SYSTEM - COMPLETE PROJECT
+
+This archive contains the complete web project, including the registration form,
+admin dashboard, Firebase configuration, Cloudinary integration, membership ID
+features, styling, branding assets, and Firestore rules.
+
+Firebase project: bayiira
+Cloudinary cloud: k5bsrnx1
+Cloudinary upload preset: new-conquerors

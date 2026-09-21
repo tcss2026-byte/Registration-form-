@@ -1,0 +1,65 @@
+BAYIIRA REGISTRATION SYSTEM - FIREBASE API KEY FIX
+==================================================
+
+Your website is hosted on GitHub Pages:
+https://tcss2026-byte.github.io/Registration-form/
+
+The code is already wired correctly to Firebase through:
+  firebase-runtime.js
+
+The current project in this ZIP uses Firebase project:
+  borh-d7a41
+
+WHY THE ERROR CAN STILL HAPPEN
+------------------------------
+The error "auth/api-key-not-valid" means Google/Firebase is rejecting the
+API key before the login can happen. This cannot be repaired by changing the
+HTML login form.
+
+DO THIS ONCE
+------------
+1. Open https://console.firebase.google.com/
+2. Open project: borh-d7a41
+3. Click the gear icon -> Project settings.
+4. Scroll to "Your apps".
+5. Open the Web app for this project.
+6. Find "SDK setup and configuration" and select "Config".
+7. Copy the COMPLETE firebaseConfig object.
+8. Open firebase-runtime.js in this ZIP.
+9. Replace the values inside firebaseConfig with the values Firebase gives you.
+10. Save the file.
+11. Upload the updated files to the GitHub repository.
+
+IMPORTANT FOR GOOGLE CLOUD API KEY RESTRICTIONS
+------------------------------------------------
+If the API key is restricted to HTTP referrers, make sure the GitHub Pages
+website is allowed. Add:
+
+https://tcss2026-byte.github.io/*
+
+If you use a path-specific rule, this also covers:
+
+https://tcss2026-byte.github.io/Registration-form/*
+
+If API restrictions are enabled, make sure the key can be used by the
+Firebase Authentication / Identity Toolkit API.
+
+ADMIN ACCOUNT
+-------------
+Administrator email used by the application:
+  tcss2026@gmail.com
+
+The administrator password is NOT stored in this ZIP.
+It must be created/managed in Firebase Authentication.
+
+FILES CHANGED IN THIS FIX
+-------------------------
+- firebase-runtime.js  -> one clear Firebase configuration source
+- firebase-config.js   -> re-exports the same configuration (no duplicate values)
+- app.js               -> clearer API-key error message
+- admin.js             -> clearer API-key error message
+
+NOTE
+----
+A static GitHub Pages website cannot hide a Firebase Web API key. That is
+normal. Firebase Security Rules and Authentication must protect your data.

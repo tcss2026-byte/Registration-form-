@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bayiira — Admin Dashboard</title><link rel="stylesheet" href="style.css?v=6">
+<title>Bayiira — Admin Dashboard</title><link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 <header class="topbar"><div class="topbar-inner">
@@ -21,7 +21,14 @@
 </div></div>
 
 <div id="dashboardView" class="hidden">
-<div class="dashboard-head"><h2>Member Registrations</h2><button id="logoutBtn" class="btn btn-secondary">Sign out</button></div>
+<div class="admin-profile card">
+  <div class="profile-heading"><div><h2>Administrator Profile</h2><p>Update your own profile picture. The image is stored in Cloudinary.</p></div></div>
+  <div class="profile-grid">
+    <div class="admin-avatar-wrap"><img id="adminDpPreview" class="admin-avatar" src="logo.png" alt="Administrator profile picture"><label class="btn btn-secondary btn-small file-btn">Change DP<input id="adminDpInput" type="file" accept="image/jpeg,image/png,image/webp" hidden></label></div>
+    <div><strong id="adminProfileName">Administrator</strong><div class="muted" id="adminProfileEmail">tcss2026@gmail.com</div><button id="saveAdminDpBtn" class="btn btn-primary" style="margin-top:12px" disabled>Save Profile Picture</button><div id="adminProfileMsg" class="success"></div></div>
+  </div>
+</div>
+<div class="dashboard-head"><h2>Member Registrations</h2><button id="logoutBtn" class="btn btn-danger" type="button">LOGOUT</button></div>
 <div class="stats">
 <div class="stat"><strong id="totalCount">0</strong><span>Total</span></div>
 <div class="stat"><strong id="pendingCount">0</strong><span>Pending</span></div>
@@ -39,12 +46,38 @@
 </div>
 </main>
 
+<div id="idModal" class="modal"><div class="modal-box id-modal-box">
+<div class="modal-head"><strong>Member ID Card</strong><button id="closeIdModal" class="btn btn-secondary btn-small">Close</button></div>
+<div class="modal-body id-modal-body"><div id="memberIdCard" class="member-id-card">
+  <div class="id-watermark" aria-hidden="true"><img src="bayiira-watermark.png" alt=""></div>
+  <div class="id-ribbon"></div>
+  <div class="id-header"><img src="logo.png" alt="Bayiira logo"><div class="id-title"><h2>BAYIIRA OF RWENZORI</h2><p>MY HOME LAND ASSOCIATION</p><span>MEMBERSHIP ID CARD</span></div><div id="idQr" class="id-qr" aria-label="Member QR code"></div></div>
+  <div class="id-main">
+    <div class="id-photo-wrap"><img id="idPassport" src="logo.png" alt="Member passport"></div>
+    <div class="id-fields">
+      <div class="id-name-field"><span>FULL NAME</span><strong id="idFullName">—</strong></div>
+      <div class="id-reg-field"><span>REGISTRATION NO.</span><strong id="idRegNo">—</strong></div>
+      <div><span>MEMBERSHIP TYPE</span><strong id="idMembership">—</strong></div>
+      <div><span>MEMBER CATEGORY</span><strong id="idCategory">—</strong></div>
+      <div><span>PHONE</span><strong id="idPhone">—</strong></div>
+    </div>
+    <div class="id-side-panel">
+      <div class="id-signature-box"><span id="idSignature">Member</span><small>MEMBER SIGNATURE</small></div>
+      <div class="id-thumb-box"><div class="thumbprint-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div><small>THUMB IMPRESSION</small></div>
+    </div>
+  </div>
+  <div class="id-footer"><div class="barcode-wrap"><svg id="idBarcode"></svg><strong id="idBarcodeText">—</strong><small>SCAN / REGISTRATION NUMBER</small></div><div class="id-footer-text"><strong>BAYIIRA C.D.A</strong><span>Unity • Progress • Welfare</span><em>Together We Build a Better Future</em></div></div>
+</div><button id="downloadIdBtn" class="btn btn-primary download-id-btn">Download ID as PNG</button><p class="id-note">Only the front membership card is downloaded as a 4:3 PNG.</p></div></div></div>
+
 <div id="detailModal" class="modal"><div class="modal-box">
 <div class="modal-head"><strong>Member Details</strong><button id="closeModal" class="btn btn-secondary btn-small">Close</button></div>
 <div id="detailBody" class="modal-body"></div>
 </div></div>
 
-<script type="module" src="admin.js?v=6"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script type="module" src="admin.js?v=11"></script>
 <footer class="footer">
   <div>Bayiira of Rwenzori My Home Land Association — Administrator</div>
   <a class="creator-mini" href="https://galaxymediadesign.netlify.app" target="_blank" rel="noopener noreferrer">

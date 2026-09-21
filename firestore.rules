@@ -1,31 +1,17 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Public registration:
-    // Anyone may create a new membership registration.
-    // Only the authorized administrator can read, update, or delete members.
+    function isAdmin() { return request.auth != null && request.auth.token.email == 'tcss2026@gmail.com'; }
     match /members/{memberId} {
-      allow create: if
-        request.resource.data.keys().hasAll([
-          'firstName',
-          'lastName',
-          'phone',
-          'membershipCategory',
-          'membershipType',
-          'status',
-          'submittedAt'
-        ])
-        && request.resource.data.status == 'pending';
-
-      allow read, update, delete: if
-        request.auth != null
-        && request.auth.token.email == 'tcss2026@gmail.com';
+      allow create: if request.resource.data.keys().hasAll(['firstName','lastName','phone','membershipCategory','membershipType','status','submittedAt','passportPhotoUrl']) && request.resource.data.status == 'pending';
+      allow read, update, delete: if isAdmin();
     }
-
-    match /{document=**} {
-      allow read, write: if false;
+    match /adminProfiles/{userId} {
+      allow read, write: if isAdmin() && request.auth.uid == userId;
     }
+    match /settings/{documentId} {
+      allow read, write: if isAdmin();
+    }
+    match /{document=**} { allow read, write: if false; }
   }
 }
