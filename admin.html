@@ -22,7 +22,7 @@
 
 <div id="dashboardView" class="hidden">
 <div class="admin-profile card">
-  <div class="profile-heading"><div><h2>Administrator Profile</h2><p>Update your own profile picture. The image is stored in Cloudinary.</p></div></div>
+  <div class="profile-heading"><div><h2>Administrator Profile</h2><p>Update your own profile picture.</p></div></div>
   <div class="profile-grid">
     <div class="admin-avatar-wrap"><img id="adminDpPreview" class="admin-avatar" src="logo.png" alt="Administrator profile picture"><label class="btn btn-secondary btn-small file-btn">Change DP<input id="adminDpInput" type="file" accept="image/jpeg,image/png,image/webp" hidden></label></div>
     <div><strong id="adminProfileName">Administrator</strong><div class="muted" id="adminProfileEmail">tcss2026@gmail.com</div><button id="saveAdminDpBtn" class="btn btn-primary" style="margin-top:12px" disabled>Save Profile Picture</button><div id="adminProfileMsg" class="success"></div></div>
@@ -33,13 +33,13 @@
 <div class="stat"><strong id="totalCount">0</strong><span>Total</span></div>
 <div class="stat"><strong id="pendingCount">0</strong><span>Pending</span></div>
 <div class="stat"><strong id="approvedCount">0</strong><span>Approved</span></div>
-<div class="stat"><strong id="rejectedCount">0</strong><span>Rejected</span></div>
+<div class="stat"><strong id="rejectedCount">0</strong><span>Rejected</span></div><div class="stat"><strong id="activeCount">0</strong><span>Active</span></div><div class="stat"><strong id="expiredCount">0</strong><span>Expired</span></div>
 </div>
 <div class="card" style="padding:15px">
 <div class="toolbar">
 <input id="search" placeholder="Search name, phone, email...">
-<select id="statusFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
-<button id="refreshBtn" class="btn btn-secondary">Refresh</button>
+<select id="statusFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="active">Active</option><option value="expired">Expired</option></select>
+<button id="refreshBtn" class="btn btn-secondary" type="button">Refresh</button><button id="exportCsvBtn" class="btn btn-primary" type="button">Export CSV</button><button id="printReportBtn" class="btn btn-secondary" type="button">Print / PDF</button><button id="backupJsonBtn" class="btn btn-secondary" type="button">Backup JSON</button><button id="auditBtn" class="btn btn-secondary" type="button">Audit Logs</button>
 </div>
 <div class="table-wrap"><table><thead><tr><th>Applicant</th><th>Phone</th><th>Membership</th><th>Submitted</th><th>Status</th><th>Actions</th></tr></thead><tbody id="membersBody"></tbody></table></div>
 </div>
@@ -49,25 +49,34 @@
 <div id="idModal" class="modal"><div class="modal-box id-modal-box">
 <div class="modal-head"><strong>Member ID Card</strong><button id="closeIdModal" class="btn btn-secondary btn-small">Close</button></div>
 <div class="modal-body id-modal-body"><div id="memberIdCard" class="member-id-card">
-  <div class="id-watermark" aria-hidden="true"><img src="bayiira-watermark.png" alt=""></div>
-  <div class="id-ribbon"></div>
-  <div class="id-header"><img src="logo.png" alt="Bayiira logo"><div class="id-title"><h2>BAYIIRA OF RWENZORI</h2><p>MY HOME LAND ASSOCIATION</p><span>MEMBERSHIP ID CARD</span></div><div id="idQr" class="id-qr" aria-label="Member QR code"></div></div>
-  <div class="id-main">
-    <div class="id-photo-wrap"><img id="idPassport" src="logo.png" alt="Member passport"></div>
+  <div class="id-top-accent"></div>
+  <div class="id-header">
+    <div class="id-brand-mark"><img src="logo.png" alt="Bayiira logo"></div>
+    <div class="id-title"><h2>BAYIIRA</h2><p>MEMBERSHIP ORGANISATION</p><span>Unity &nbsp;•&nbsp; Development &nbsp;•&nbsp; Progress</span></div>
+    <div id="idQr" class="id-qr" aria-label="Member QR code"></div>
+  </div>
+  <div class="id-member-area">
+    <div class="id-photo-wrap"><img id="idPassport" src="logo.png" alt="Member passport photo"></div>
     <div class="id-fields">
-      <div class="id-name-field"><span>FULL NAME</span><strong id="idFullName">—</strong></div>
-      <div class="id-reg-field"><span>REGISTRATION NO.</span><strong id="idRegNo">—</strong></div>
+      <div class="id-name-field"><span>MEMBER NAME</span><strong id="idFullName">—</strong></div>
+      <div><span>MEMBERSHIP NO.</span><strong id="idRegNo">—</strong></div>
+      <div><span>PHONE</span><strong id="idPhone">—</strong></div>
       <div><span>MEMBERSHIP TYPE</span><strong id="idMembership">—</strong></div>
       <div><span>MEMBER CATEGORY</span><strong id="idCategory">—</strong></div>
-      <div><span>PHONE</span><strong id="idPhone">—</strong></div>
+      <div><span>LOCATION</span><strong id="idLocation">—</strong></div>
+      <div><span>SUB-COUNTY / TOWN COUNCIL</span><strong id="idSubCounty">—</strong></div>
+      <div><span>COUNTY / DIVISION</span><strong id="idCounty">—</strong></div>
+      <div><span>DISTRICT / CITY</span><strong id="idDistrict">—</strong></div>
     </div>
-    <div class="id-side-panel">
-      <div class="id-signature-box"><span id="idSignature">Member</span><small>MEMBER SIGNATURE</small></div>
-      <div class="id-thumb-box"><div class="thumbprint-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div><small>THUMB IMPRESSION</small></div>
-    </div>
+    <div class="id-valid-box"><strong>MEMBER</strong><span>VALID</span><b id="idValidity">2026</b></div>
   </div>
-  <div class="id-footer"><div class="barcode-wrap"><svg id="idBarcode"></svg><strong id="idBarcodeText">—</strong><small>SCAN / REGISTRATION NUMBER</small></div><div class="id-footer-text"><strong>BAYIIRA C.D.A</strong><span>Unity • Progress • Welfare</span><em>Together We Build a Better Future</em></div></div>
-</div><button id="downloadIdBtn" class="btn btn-primary download-id-btn">Download ID as PNG</button><p class="id-note">Only the front membership card is downloaded as a 4:3 PNG.</p></div></div></div>
+  <div class="id-approval-row">
+    <div class="id-approval-cell id-member-signature-cell"><img id="idMemberSignature" src="logo.png" alt="Automatically generated member signature"><strong>MEMBER SIGNATURE</strong></div>
+    <div class="id-approval-cell"><img id="idChairpersonSignature" src="muhindo-enock-signature.png" alt="Muhindo Enock signature"><strong>MUHINDO ENOCK</strong><small>Chairperson</small></div>
+    <div class="id-approval-cell"><img id="idSecretarySignature" src="masereka-felex-signature.png" alt="Masereka Felex signature"><strong>MASEREKA FELEX</strong><small>Gen. Sec.</small></div>
+  </div>
+  <div class="id-footer"><div class="id-footer-left"><strong>BAYIIRA MEMBERSHIP ORGANISATION</strong><span>Together We Build a Better Tomorrow</span></div><div class="barcode-wrap"><svg id="idBarcode"></svg><strong id="idBarcodeText">—</strong></div></div>
+</div></div><button id="downloadIdBtn" class="btn btn-primary download-id-btn">Download ID as PNG</button><p class="id-note">Only the front membership card is downloaded as a 4:3 PNG. Scan the QR code to verify this membership online.</p></div></div></div>
 
 <div id="detailModal" class="modal"><div class="modal-box">
 <div class="modal-head"><strong>Member Details</strong><button id="closeModal" class="btn btn-secondary btn-small">Close</button></div>
@@ -77,7 +86,11 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-<script type="module" src="admin.js?v=11"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js?v=3"></script>
+<script src="admin.js?v=30"></script>
 <footer class="footer">
   <div>Bayiira of Rwenzori My Home Land Association — Administrator</div>
   <a class="creator-mini" href="https://galaxymediadesign.netlify.app" target="_blank" rel="noopener noreferrer">

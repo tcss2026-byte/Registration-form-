@@ -1,5 +1,4 @@
-// Firebase configuration for BAYIIRA OF RWENZORI MY HOME LAND ASSOCIATION.
-const firebaseConfig = {
+window.BAYIIRA_FIREBASE_CONFIG = {
   apiKey: "AIzaSyAZsG6Quhl28uFCSzyjz4ufUwqyQWVdnLo",
   authDomain: "bayiira.firebaseapp.com",
   projectId: "bayiira",
@@ -8,5 +7,4 @@ const firebaseConfig = {
   appId: "1:403328235363:web:e718d443e316f29e798556",
   measurementId: "G-F45W006FRM"
 };
-
-const ADMIN_EMAIL = "tcss2026@gmail.com";
+window.BAYIIRA_ADMIN_EMAIL = "tcss2026@gmail.com";

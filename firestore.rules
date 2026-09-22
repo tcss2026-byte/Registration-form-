@@ -1,17 +1,25 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAdmin() { return request.auth != null && request.auth.token.email == 'tcss2026@gmail.com'; }
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && request.auth.token.email == 'tcss2026@gmail.com'; }
     match /members/{memberId} {
-      allow create: if request.resource.data.keys().hasAll(['firstName','lastName','phone','membershipCategory','membershipType','status','submittedAt','passportPhotoUrl']) && request.resource.data.status == 'pending';
+      allow create: if request.resource.data.status == 'pending'
+        && request.resource.data.keys().hasAll(['firstName','lastName','phone','membershipCategory','membershipType','status','submittedAt','passportPhotoUrl'])
+        && request.resource.data.firstName is string && request.resource.data.lastName is string
+        && request.resource.data.phone is string && request.resource.data.membershipCategory is string
+        && request.resource.data.membershipType is string && request.resource.data.passportPhotoUrl is string;
       allow read, update, delete: if isAdmin();
     }
-    match /adminProfiles/{userId} {
-      allow read, write: if isAdmin() && request.auth.uid == userId;
+    match /verifications/{membershipNumber} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
     }
-    match /settings/{documentId} {
-      allow read, write: if isAdmin();
-    }
+    match /auditLogs/{logId} { allow create, read: if isAdmin(); allow update, delete: if false; }
+    match /adminProfiles/{userId} { allow read, write: if isAdmin() && request.auth.uid == userId; }
+    match /settings/{documentId} { allow read, write: if isAdmin(); }
     match /{document=**} { allow read, write: if false; }
   }
 }

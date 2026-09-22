@@ -1,83 +1,79 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-import { firebaseConfig } from "./firebase-runtime.js";
-
-const CLOUDINARY_CLOUD_NAME = "k5bsrnx1";
-const CLOUDINARY_UPLOAD_PRESET = "new-conquerors";
-const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const form = document.getElementById("registrationForm");
-const submitBtn = document.getElementById("submitBtn");
-const success = document.getElementById("success");
-const errorBox = document.getElementById("error");
-const submissionSuccess = document.getElementById("submissionSuccess");
-const registrationReference = document.getElementById("registrationReference");
-const submitAnotherBtn = document.getElementById("submitAnotherBtn");
-const passportPhoto = document.getElementById("passportPhoto");
-const passportPreview = document.getElementById("passportPreview");
-
-async function uploadToCloudinary(file, folder) {
-  if (!file) throw new Error("Passport photo is required.");
-  if (file.size > 5 * 1024 * 1024) throw new Error("Passport photo must be 5 MB or smaller.");
-  if (!/^image\/(jpeg|png|webp)$/.test(file.type)) throw new Error("Passport photo must be JPG, PNG or WebP.");
-  const body = new FormData();
-  body.append("file", file);
-  body.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-  body.append("folder", folder);
-  let response;
-  try {
-    response = await fetch(CLOUDINARY_URL, { method: "POST", body, mode: "cors", credentials: "omit" });
-  } catch (networkError) {
-    throw new Error(`Cloudinary could not be reached. Check your internet connection and confirm that upload preset "${CLOUDINARY_UPLOAD_PRESET}" exists and is set to Unsigned in Cloudinary. (${networkError.message || "network error"})`);
+(function(){
+  "use strict";
+  const config = window.BAYIIRA_FIREBASE_CONFIG;
+  if (!window.firebase || !config) {
+    console.error("Bayiira: Firebase SDK/config failed to load.");
+    const box=document.getElementById("error"); if(box){box.textContent="The registration system could not load Firebase. Check your internet connection and reload.";box.style.display="block";}
+    return;
   }
-  let result = {};
-  try { result = await response.json(); } catch (_) {}
-  if (!response.ok || !result.secure_url) {
-    const detail = result?.error?.message || `HTTP ${response.status}`;
-    throw new Error(`Cloudinary upload failed: ${detail}. Cloud: ${CLOUDINARY_CLOUD_NAME}; Preset: ${CLOUDINARY_UPLOAD_PRESET}`);
+  if (!firebase.apps.length) firebase.initializeApp(config);
+  const db = firebase.firestore();
+  const form=document.getElementById("registrationForm"), submitBtn=document.getElementById("submitBtn");
+  const success=document.getElementById("success"), errorBox=document.getElementById("error");
+  const submissionSuccess=document.getElementById("submissionSuccess"), registrationReference=document.getElementById("registrationReference");
+  const submitAnotherBtn=document.getElementById("submitAnotherBtn"), passportPhoto=document.getElementById("passportPhoto"), passportPreview=document.getElementById("passportPreview");
+  if(!form||!submitBtn||!success||!errorBox||!submissionSuccess||!registrationReference||!submitAnotherBtn||!passportPhoto||!passportPreview){console.error("Bayiira: required registration elements are missing.");return;}
+  function message(el,text){el.textContent=text;el.style.display="block";}
+  function hide(el){el.textContent="";el.style.display="none";}
+  function resetPassportPreview(){passportPreview.innerHTML="<span>Passport photo preview</span>";}
+  function photoToDataUrl(file,maxW=420,maxH=525,quality=.70){
+    return new Promise((resolve,reject)=>{
+      if(!file) return reject(new Error("Passport photo is required."));
+      if(!/^image\/(jpeg|png|webp)$/.test(file.type)) return reject(new Error("Passport photo must be JPG, PNG or WebP."));
+      if(file.size>5*1024*1024) return reject(new Error("Passport photo must be 5 MB or smaller."));
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const img=new Image();
+        img.onload=()=>{let w=img.naturalWidth,h=img.naturalHeight,r=Math.min(1,maxW/w,maxH/h);w=Math.max(1,Math.round(w*r));h=Math.max(1,Math.round(h*r));const c=document.createElement("canvas");c.width=w;c.height=h;const ctx=c.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);resolve(c.toDataURL("image/jpeg",quality));};
+        img.onerror=()=>reject(new Error("The passport photo could not be read.")); img.src=reader.result;
+      };
+      reader.onerror=()=>reject(new Error("The passport photo could not be read."));
+      reader.readAsDataURL(file);
+    });
   }
-  return result.secure_url;
-}
-
-passportPhoto?.addEventListener("change", () => {
-  const file = passportPhoto.files?.[0];
-  if (!file) { passportPreview.innerHTML = "<span>Passport photo preview</span>"; return; }
-  if (file.size > 5 * 1024 * 1024) { passportPhoto.value = ""; passportPreview.innerHTML = "<span>Photo is too large</span>"; return; }
-  const url = URL.createObjectURL(file);
-  passportPreview.innerHTML = `<img src="${url}" alt="Passport preview">`;
-});
-
-if (!form || !submitBtn || !success || !errorBox || !submissionSuccess || !registrationReference || !submitAnotherBtn) {
-  console.error("Bayiira registration page: required form elements were not found.");
-} else {
-  const showMessage = (el, message) => { el.textContent = message; el.style.display = "block"; };
-  const hideMessage = (el) => { el.textContent = ""; el.style.display = "none"; };
-  const showSubmittedState = (reference) => { registrationReference.textContent = reference; form.classList.add("hidden"); submissionSuccess.classList.remove("hidden"); window.scrollTo({ top: 0, behavior: "smooth" }); };
-  const showFormState = () => { submissionSuccess.classList.add("hidden"); form.classList.remove("hidden"); form.reset(); passportPreview.innerHTML = "<span>Passport photo preview</span>"; hideMessage(success); hideMessage(errorBox); window.scrollTo({ top: 0, behavior: "smooth" }); };
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault(); hideMessage(success); hideMessage(errorBox);
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    if (!passportPhoto.files?.[0]) { showMessage(errorBox, "Please upload the member's passport photo."); return; }
-    submitBtn.disabled = true; submitBtn.innerHTML = '<span class="spinner"></span>Uploading photo & submitting...';
-    try {
-      const data = Object.fromEntries(new FormData(form).entries());
-      delete data.agreement; delete data.passportPhoto;
-      data.passportPhotoUrl = await uploadToCloudinary(passportPhoto.files[0], "bayiira/members/passports");
-      data.fullName = `${data.firstName || ""} ${data.lastName || ""}`.trim();
-      data.status = "pending";
-      data.submittedAt = serverTimestamp(); data.updatedAt = serverTimestamp();
-      const ref = await addDoc(collection(db, "members"), data);
-      showSubmittedState(ref.id);
-    } catch (error) {
-      console.error("Registration submission failed:", error);
-      const code = error?.code ? ` [${error.code}]` : "";
-      const message = error?.message || "Registration could not be submitted. Please try again.";
-      showMessage(errorBox, `Registration failed${code}: ${message}`);
-      submitBtn.disabled = false; submitBtn.textContent = "SUBMIT MEMBERSHIP REGISTRATION";
+  passportPhoto.addEventListener("change",()=>{
+    const f=passportPhoto.files&&passportPhoto.files[0];
+    resetPassportPreview();
+    if(!f)return;
+    if(f.size>5*1024*1024){passportPhoto.value="";passportPreview.innerHTML="<span>Photo is too large</span>";return;}
+    if(!/^image\/(jpeg|png|webp)$/.test(f.type)){passportPhoto.value="";passportPreview.innerHTML="<span>Use JPG, PNG or WebP</span>";return;}
+    const reader=new FileReader();
+    reader.onload=()=>{passportPreview.innerHTML="";const img=document.createElement("img");img.src=reader.result;img.alt="Passport preview";passportPreview.appendChild(img);};
+    reader.readAsDataURL(f);
+  });
+  const uploadBox=passportPhoto.closest(".upload-box");
+  if(uploadBox){
+    ["dragover","dragenter"].forEach(evt=>uploadBox.addEventListener(evt,e=>{e.preventDefault();e.stopPropagation();}));
+    ["drop"].forEach(evt=>uploadBox.addEventListener(evt,e=>{e.preventDefault();e.stopPropagation();}));
+  }
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();hide(success);hide(errorBox);
+    if(!form.checkValidity()){form.reportValidity();return;}
+    const file=passportPhoto.files&&passportPhoto.files[0]; if(!file){message(errorBox,"Please upload the member's passport photo.");return;}
+    submitBtn.disabled=true;submitBtn.textContent="SUBMITTING...";
+    try{
+      const data={}; new FormData(form).forEach((v,k)=>{if(k!=="agreement"&&k!=="passportPhoto")data[k]=v;});
+      data.fullName=((data.firstName||"")+" "+(data.lastName||"")).trim();
+      data.status="pending";
+      data.membershipStatus="pending";
+      data.passportPhotoUrl=await photoToDataUrl(file);
+      data.submittedAt=firebase.firestore.FieldValue.serverTimestamp();
+      data.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
+      const ref=await db.collection("members").add(data);
+      registrationReference.textContent=ref.id;
+      form.reset();
+      resetPassportPreview();
+      hide(errorBox); hide(success);
+      submitBtn.disabled=false;submitBtn.textContent="SUBMIT MEMBERSHIP REGISTRATION";
+      form.classList.add("hidden"); submissionSuccess.classList.remove("hidden"); window.scrollTo({top:0,behavior:"smooth"});
+    }catch(err){
+      console.error("Registration submission failed:",err);
+      message(errorBox,(err&&err.code==="permission-denied")?"Registration failed: Firestore denied the registration. Publish the included firestore.rules to your Firebase project, then reload the form.":"Registration failed: "+(err&&err.message?err.message:"Please check your connection and try again."));
+      submitBtn.disabled=false;submitBtn.textContent="SUBMIT MEMBERSHIP REGISTRATION";
     }
   });
-  submitAnotherBtn.addEventListener("click", showFormState);
-}
+  submitAnotherBtn.addEventListener("click",()=>{
+    form.reset();resetPassportPreview();hide(success);hide(errorBox);submitBtn.disabled=false;submitBtn.textContent="SUBMIT MEMBERSHIP REGISTRATION";
+    submissionSuccess.classList.add("hidden");form.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});
+  });
+})();
